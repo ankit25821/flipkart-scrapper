@@ -1,4 +1,4 @@
-# flipkart-scrapper
+# Flipkart-scrapper
 Scrapes flipkart products with search feature
 ### Install required packages 
 `pip install -r requirements.txt`
