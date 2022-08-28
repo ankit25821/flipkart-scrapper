@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'head_links.html' %}
+
+    <title>Web Scraper</title>
+    <script>
+        function goHome() {
+            window.location.assign("{{url_for('index')}}")
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="sticky-top bg-light text-center mb-4 border-bottom border-5 border-primary">
+        <h1 class="my-3" style="cursor:pointer;" onclick="goHome()">Flipkart Scraper</h1>
+    </div>
+
+    <div class="mb-3 pb-4 pt-2 border-bottom border-2">
+        <form action="{{url_for('search')}}" method="get" class="d-flex justify-content-center align-items-baseline">
+            <div class="form-outline col-md-3 mx-3">
+                <input type="search" id="search" name="q" class="form-control" />
+                <label class="form-label" for="search">Search products</label>
+            </div>
+            <button type="submit" class="text-center btn btn-primary">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+    {% if default_data %}
+        {% include 'buttons.html' %}
+    {% endif %}
+    
+    {% block content %}
+    <div class="container">
+
+        {% if default_data %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+
+            {% for product in default_data %}
+
+            <div class="col">
+                <a href="{{product.detail_url}}" class="card hover-shadow shadow-2-strong border text-dark"
+                    target="_blank">
+                    <img src="{{product.image}}" style="max-height:150px;object-fit: contain;"
+                        class="card-img-top p-3 pb-0" alt="{{product.name}}" />
+                    <div class="card-body text-truncate text-center">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <small class="text-success">{{product.offer_info}}</small>
+                        <p class="card-text">
+                            {{product.subtitle}}
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            {% endfor %}
+
+            <table style="display:none;width:100%;" class="display nowrap" id="hiddenTable">
+                <thead>
+                    <tr>
+                        <td>Product Name</td>
+                        <td>Image Url</td>
+                        <td>Product Detail Url</td>
+                        <td>Offer Info</td>
+                        <td>Small Description</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in default_data %}
+                    <tr>
+                        <td>{{product.name}}</td>
+                        <td>{{product.image}}</td>
+                        <td>{{product.detail_url}}</td>
+                        <td>{{product.offer_info}}</td>
+                        <td>{{product.subtitle}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+        {% endif %}
+
+    </div>
+    {% endblock %}
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+</body>
+
+</html>

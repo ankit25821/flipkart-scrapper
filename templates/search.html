@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+{% if products %}
+{% include 'buttons.html' %}
+
+
+<div class="container">
+
+    <div class="row">
+
+        {% for product in products %}
+        <a href="{{product.detail_url}}" class="card border text-dark hover-shadow shadow-2-strong mx-auto mb-3"
+            style="max-width: 640px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% with defaul_image=url_for('static', filename='images/no-products-found.png') %}
+                    <!-- <object height="" data="{{url_for('static', filename='images/no-products-found.png')}}" type="image/png"> -->
+                    <img src="{{product.image}}" class="img-fluid rounded-start m-3 p-2"
+                        style="max-height:150px;object-fit: contain;"
+                        onerror="if (this.src != '{{defaul_image}}') this.src = '{{defaul_image}}';" />
+                    <!-- </object> -->
+                    {% endwith %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">
+                            {{product.price}}{# {{product.spcification}} #}
+                        </p>
+                        <p class="card-text">
+                            {% if product.rating == 'No Rating' %}
+                            <span class="badge p-3 rounded-pill badge-warning">
+                                {{product.rating}} <i class="fas ms-2 fa-lg fa-frown"></i>
+                            </span>
+                            {% else %}
+                            <span class="badge p-3 rounded-pill badge-success">
+                                {{product.rating}} <i class="fas ms-2 fa-star"></i>
+                            </span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+        <table style="display:none;width:100%;" class="display nowrap" id="hiddenTable">
+            <thead>
+                <tr>
+                    <td>Product Name</td>
+                    <td>Image Url</td>
+                    <td>Price</td>
+                    <td>Rating</td>
+                    <td>Product Detail Url</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.image}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{product.rating}}</td>
+                    <td>{{product.detail_url}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
